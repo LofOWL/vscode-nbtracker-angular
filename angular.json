@@ -1,7 +1,188 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "vscode": {
+      "root": "apps/vscode",
+      "sourceRoot": "apps/vscode/src",
+      "projectType": "application",
+      "prefix": "vscode",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/vscode",
+            "main": "apps/vscode/src/main.ts",
+            "tsConfig": "apps/vscode/tsconfig.app.json",
+            "assets": ["apps/vscode/src/assets", "apps/vscode/src/package.json"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/vscode/src/environments/environment.ts",
+                  "with": "apps/vscode/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "vscode:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/vscode/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/vscode/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "webview": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/webview",
+      "sourceRoot": "apps/webview/src",
+      "prefix": "vscode-nbtracker-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/vscode/webview",
+            "index": "apps/webview/src/index.html",
+            "main": "apps/webview/src/main.ts",
+            "polyfills": "apps/webview/src/polyfills.ts",
+            "tsConfig": "apps/webview/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/webview/src/favicon.ico",
+              "apps/webview/src/assets"
+            ],
+            "styles": ["apps/webview/src/styles.css"],
+            "scripts": [],
+            "outputHashing": "all"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/webview/src/environments/environment.ts",
+                  "with": "apps/webview/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "webview:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "webview:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "webview:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/webview/tsconfig.app.json",
+              "apps/webview/tsconfig.spec.json",
+              "apps/webview/tsconfig.editor.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/webview/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/webview/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "webview-e2e": {
+      "root": "apps/webview-e2e",
+      "sourceRoot": "apps/webview-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/webview-e2e/cypress.json",
+            "tsConfig": "apps/webview-e2e/tsconfig.e2e.json",
+            "devServerTarget": "webview:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "webview:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/webview-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/webview-e2e/**/*"]
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/node",
+    "analytics": false
+  },
+  "defaultProject": "vscode",
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
   }
 }

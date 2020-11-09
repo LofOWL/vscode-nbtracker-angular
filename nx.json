@@ -22,5 +22,16 @@
       }
     }
   },
-  "projects": {}
+  "projects": {
+    "vscode": {
+      "tags": []
+    },
+    "webview": {
+      "tags": []
+    },
+    "webview-e2e": {
+      "tags": [],
+      "implicitDependencies": ["webview"]
+    }
+  }
 }

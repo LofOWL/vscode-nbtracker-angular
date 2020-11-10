@@ -1,15 +1,16 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener,OnInit} from '@angular/core';
 
 @Component({
   selector: 'vscode-nbtracker-angular-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'notebook diff test2';
   file_list = [];
 
   constructor(){
+    this.file_list = [];
     console.log("get in AppComponent constructor");
     window.addEventListener('message', (event) => {
       const message = JSON.parse(event.data); // The JSON data our extension sent
@@ -24,6 +25,10 @@ export class AppComponent {
       }
     });
     console.log(this.file_list);
+  }
+
+  ngOnInit(){
+    console.log("get in init");
   }
 
 }

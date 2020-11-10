@@ -1,6 +1,6 @@
-import * as vscode from "vscode";
-import { Notebook } from "./notebook";
-import { NBWebview } from "./nbwebview";
+import * as vscode from 'vscode';
+import { Notebook } from './notebook';
+import { NBWebview } from './nbwebview';
 
 export default class NotebookPool {
   public filelist: Notebook[];
@@ -14,24 +14,22 @@ export default class NotebookPool {
       const file = new Notebook(e);
       await file.setContext();
       this.filelist.push(file);
-      vscode.window.showInformationMessage("file added");
+      vscode.window.showInformationMessage('file added');
     } else {
-      vscode.window.showInformationMessage("file existed");
+      vscode.window.showInformationMessage('file existed');
     }
-    console.log("new:");
+    console.log('new:');
     for (let file of this.filelist) {
       console.log(file.uri.fsPath);
     }
   }
 
   diff(extensionPath: string) {
-    vscode.window.showInformationMessage("diff");
+    vscode.window.showInformationMessage('diff');
 
     const panel = new NBWebview(extensionPath);
     panel.start();
     panel.addListener(this.filelist);
-
-    // vscode.commands.executeCommand ( 'vscode.diff', this.filelist[0].uri, this.filelist[1].uri);
   }
 
   isExist(e: vscode.Uri) {

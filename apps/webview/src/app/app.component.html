@@ -5,10 +5,15 @@
     <span class="file">
       <div *ngFor="let cell of file">
         <span class="cell">
-          <div *ngFor="let line of cell.source">
-            <span class="line">
-              {{ line }}
-            </span>
+          <div *ngFor="let line of cell.source; index as i">
+            <div class="line">
+              <div class="line_index line_element_p">
+                {{ i + 1 }}
+              </div>
+              <div class="line_context line_element_p">
+                {{ line }}
+              </div>
+            </div>
           </div>
         </span>
       </div>

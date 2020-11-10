@@ -26,12 +26,10 @@ export default class NotebookPool {
 
   diff(extensionPath: string) {
     vscode.window.showInformationMessage("diff");
-    try{
-      const panel = new NBWebview(extensionPath);
-    } catch (error){
-      console.log(error);
-    }
 
+    const panel = new NBWebview(extensionPath);
+    panel.start();
+    panel.addListener(this.filelist);
 
     // vscode.commands.executeCommand ( 'vscode.diff', this.filelist[0].uri, this.filelist[1].uri);
   }

@@ -9,12 +9,12 @@
 	],
 	"activationEvents": [
 		"onCommand:notebook-tracker.add_file_to_pool",
-		"onCommand:notebook-tracker.diff_pool"
+    "onCommand:notebook-tracker.diff_pool"
 	],
 	"main": "main.js",
 	"contributes": {
 		"menus": {
-			"editor/title/context": [
+			"explorer/context": [
 				{
 					"command": "notebook-tracker.add_file_to_pool",
 					"group": "1_diff_group@1",
@@ -24,8 +24,7 @@
 			"editor/title": [
 				{
 					"command": "notebook-tracker.diff_pool",
-					"group": "navigation",
-					"when": "resourceExtname == .ipynb"
+					"group": "navigation"
 				}
 			]
 		},
@@ -33,12 +32,12 @@
 			{
 				"command": "notebook-tracker.add_file_to_pool",
 				"title": "add selected notebook",
-				"category": "hello"
+				"category": "Jupyter Notebook"
 			},
 			{
 				"command": "notebook-tracker.diff_pool",
 				"title": "diff-notebook",
-				"category": "hello"
+				"category": "Jupyter Notebook"
 			}
 		]
 	},

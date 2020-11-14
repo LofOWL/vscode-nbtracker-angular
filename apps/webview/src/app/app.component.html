@@ -3,16 +3,31 @@
 <div class="file_list">
   <div *ngFor="let file of file_list">
     <span class="file">
-      <div *ngFor="let cell of file">
+      <div *ngFor="let cell of file; index as cell_index">
         <span class="cell">
-          <div *ngFor="let line of cell.source; index as i">
-            <div class="line">
-              <div class="line_index line_element_p">
-                {{ i + 1 }}
+          <div class="index element_p" style="background-color: aqua;">
+            {{ cell_index + 1 }}
+          </div>
+          
+          <div *ngIf="cell['cell_type'] == 'markdown'" class="type element_p">
+              m
+          </div>
+          <div *ngIf = "cell['cell_type'] == 'code'" class="type element_p">
+              c
+          </div>
+          <div style="display: block;background-color: aqua;width: 100%;">
+            <div *ngFor="let line of cell.source; index as line_index">
+              
+              
+              <div class="line">
+                <div class="index element_p" style="background-color: orange;">
+                  {{ line_index + 1 }}
+                </div>
+                <div class="line_context element_p">
+                  {{ line }}
+                </div>
               </div>
-              <div class="line_context line_element_p">
-                {{ line }}
-              </div>
+
             </div>
           </div>
         </span>

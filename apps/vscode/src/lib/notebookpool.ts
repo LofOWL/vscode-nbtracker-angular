@@ -10,6 +10,7 @@ export default class NotebookPool {
   }
 
   async addFile(e: vscode.Uri) {
+    console.log(e);
     if (!this.isExist(e)) {
       const file = new Notebook(e);
       await file.setContext();

@@ -8,6 +8,7 @@ import { Component, HostListener,OnInit} from '@angular/core';
 export class AppComponent implements OnInit{
   title = 'notebook diff test2';
   file_list = [];
+  diff_map_list = [];
 
   constructor(){
     this.file_list = [];

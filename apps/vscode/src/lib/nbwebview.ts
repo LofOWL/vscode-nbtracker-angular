@@ -1,13 +1,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { environment } from '../environments/environment';
-import { watch } from 'fs';
+
 
 export class NBWebview {
+
   extensionPath: string;
   panel: vscode.WebviewPanel;
   isStart: boolean;
+
   matchLinks = /(href|src)="([^"]*)"/g;
   toUri = (_, prefix: 'href' | 'src', link: string) => {
     // For
@@ -61,7 +62,7 @@ export class NBWebview {
     );
 
     this.setHtml();
-
+      console.log("hello");
     this.isStart = true;
   }
 }

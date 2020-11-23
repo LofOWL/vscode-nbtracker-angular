@@ -1,0 +1,39 @@
+<div class="block">
+
+
+  <div class="sub_block">
+    <div>
+      {{ old_cell_index }}
+    </div>
+    <div *ngFor="let line of old_cell; index as old_line_index" #elem [id]="getId(old_cell_index,old_line_index,'old')">
+      <div>{{getId(old_cell_index,old_line_index,'old')}}</div>
+      <div class="line">
+        <div class="index element_p" style="background-color: orange;">
+          {{ old_line_index + 1 }}
+        </div>
+        <div class="line_context element_p">
+          {{ line }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub_block">
+    <div *ngFor="let cell of new_cell; index as cell_list_index">
+      <div>
+        {{ new_cell_index[cell_list_index] }}
+      </div>
+      <div *ngFor="let line of cell; index as new_line_index" #elem [id]="getId(new_cell_index,new_line_index,'new')">
+        <div>{{getId(new_cell_index,new_line_index,'new')}}</div>
+        <div class="line">
+          <div class="index element_p" style="background-color: orange;">
+            {{ new_line_index + 1}}
+          </div>
+          <div class="line_context element_p">
+            {{ line }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

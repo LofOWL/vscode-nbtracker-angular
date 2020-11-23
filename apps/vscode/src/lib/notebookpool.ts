@@ -2,8 +2,7 @@ import * as vscode from 'vscode';
 import { Notebook } from './notebook';
 import { NBWebview } from './nbwebview';
 
-import {notebook} from "../diff-algorithm/nb_components/notebook";
-import {nbdiff} from "../diff-algorithm/nbdiff";
+import {DiffElement} from "./diff_element";
 
 
 
@@ -31,20 +30,16 @@ export default class NotebookPool {
   }
 
   diff(extensionPath: string) {
-    vscode.window.showInformationMessage('diff');
-
-    
-    //test
-    let new_notebook = new notebook(this.filelist[0].uri.fsPath);
-    let old_notebook = new notebook(this.filelist[1].uri.fsPath);
-
-    let nd = new nbdiff(old_notebook,new_notebook);
-    nd.generate();
-    var result = nd.toJSON();
+    let index:number = 0;
+    let diffelements:DiffElement[] = [];
+    while (index < this.filelist.length-1){
+      diffelements.push(new DiffElement(this.filelist[index],this.filelist[index+1]));
+      index ++;
+    }
 
     const panel = new NBWebview(extensionPath);
-    panel.start();
-    panel.addListener(this.filelist);
+    panel.start(diffelements);
+    
   }
 
   isExist(e: vscode.Uri) {

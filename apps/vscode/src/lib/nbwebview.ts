@@ -23,6 +23,17 @@ export class NBWebview {
 
   constructor(extensionPath: string) {
     this.extensionPath = extensionPath;
+    this.panel = vscode.window.createWebviewPanel(
+      'webview',
+      'notebook-diff',
+      vscode.ViewColumn.Active,
+      {
+        enableScripts: true,
+        localResourceRoots: [
+          vscode.Uri.file(path.join(this.extensionPath, 'webview')),
+        ],
+      }
+    );
     this.isStart = false;
   }
 
@@ -34,6 +45,7 @@ export class NBWebview {
 
   addListener(filelist) {
     this.panel.onDidChangeViewState(() => {
+      console.log("touch");
       if (this.panel.visible) {
         this.onMessage(JSON.stringify(filelist));
       }
@@ -48,21 +60,13 @@ export class NBWebview {
     this.panel.webview.html = html.replace(this.matchLinks, this.toUri);
   }
 
-  start() {
-    this.panel = vscode.window.createWebviewPanel(
-      'webview',
-      'notebook-diff',
-      vscode.ViewColumn.Active,
-      {
-        enableScripts: true,
-        localResourceRoots: [
-          vscode.Uri.file(path.join(this.extensionPath, 'webview')),
-        ],
-      }
-    );
+  start(filelist) {
 
     this.setHtml();
-      console.log("hello");
+    console.log("hello");
+
+    this.addListener(filelist);
+    
     this.isStart = true;
   }
 }

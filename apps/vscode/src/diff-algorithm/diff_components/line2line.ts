@@ -5,6 +5,7 @@ export class line2line {
   new_line: line;
 
   ratio: number;
+  
   constructor(old_line: line, new_line: line, ratio: number) {
     this.old_line = old_line;
     this.new_line = new_line;
@@ -15,7 +16,7 @@ export class line2line {
     return [
       this.old_line.cell_index,
       this.old_line.index,
-      this.new_line.cell_index,
+      this.new_line.cell_index ,
       this.new_line.index,
       this.ratio,
     ];

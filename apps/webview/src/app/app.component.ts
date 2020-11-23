@@ -1,4 +1,5 @@
 import { Component, HostListener,OnInit} from '@angular/core';
+import {DiffDecoder} from './diff_decoder';
 
 @Component({
   selector: 'vscode-nbtracker-angular-root',
@@ -7,29 +8,53 @@ import { Component, HostListener,OnInit} from '@angular/core';
 })
 export class AppComponent implements OnInit{
   title = 'notebook diff test2';
-  file_list = [];
-  diff_map_list = [];
+  diffelements:DiffElement[];
 
   constructor(){
-    this.file_list = [];
+    this.diffelements = [];
     console.log("get in AppComponent constructor");
     window.addEventListener('message', (event) => {
       const message = JSON.parse(event.data); // The JSON data our extension sent
-      
-      for (let file of message){
-        const file_data = JSON.parse(file.context);
-        const cell_list = []
-        for (let cell of file_data["cells"]){
-          cell_list.push(cell);
-        }
-        this.file_list.push(cell_list);
+      for (let de of message){
+        this.diffelements.push(new DiffElement(de));
       }
+      console.log(this.diffelements.length);
     });
-    console.log(this.file_list);
+    
   }
 
   ngOnInit(){
-    console.log("get in init");
+
   }
 
 }
+
+class DiffElement{
+  old_notebook;
+  new_notebook;
+  mapping:DiffDecoder;
+  cell2cells;
+
+  constructor(input:JSON){
+    this.old_notebook = JSON.parse(input["old_notebook"]).cells;
+    this.new_notebook = JSON.parse(input["new_notebook"]).cells;
+    this.mapping = new DiffDecoder(input["mapping"]);
+    this.cell2cells = this.mapping.cell2cells.map((x)=> JSON.parse(JSON.stringify(x)));
+    console.log(this.cell2cells);
+    
+  }
+
+  getCell(notebook,index:number){
+    return notebook[index-1].source;
+  }
+
+  getCells(notebook,indexs:number[]){
+    var result = [];
+    for (let index of indexs){
+      result.push(this.getCell(notebook,index))
+    }
+    return result;
+  }
+
+}
+

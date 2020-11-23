@@ -11,7 +11,13 @@ export class nbmap {
 
   constructor(old_notebook: notebook, new_notebook: notebook) {
     this.old_notebook = old_notebook;
+    if (!this.old_notebook.isGenerated) {
+      this.old_notebook.generate();
+    }
     this.new_notebook = new_notebook;
+    if (!this.new_notebook.isGenerated) {
+      this.new_notebook.generate();
+    }
   }
 
   generate(threshold: number = 0.5): line2line[] {
@@ -26,6 +32,8 @@ export class nbmap {
           new_lines.splice(new_lines.indexOf(old_new_line_map.new_line), 1);
           this.linemap.push(old_new_line_map);
         }
+      }else{
+        this.linemap.push(new line2line(old_line,new line(),0.0));
       }
     });
     return this.linemap;
@@ -42,4 +50,10 @@ export class nbmap {
 
     return new line2line(line, best_match_line, matches.bestMatch.rating);
   }
+
+
+  toMessage():string{
+    return JSON.stringify(this.linemap.map((x)=>x.toList().toString()));
+  }
+  
 }

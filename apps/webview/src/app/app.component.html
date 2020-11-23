@@ -1,37 +1,17 @@
-<h2>Cells</h2>
+<h2>Diff Notebook</h2>
 
 <div class="file_list">
-  <div *ngFor="let file of file_list">
-    <span class="file">
-      <div *ngFor="let cell of file; index as cell_index">
-        <span class="cell">
-          <div class="index element_p" style="background-color: aqua;">
-            {{ cell_index + 1 }}
-          </div>
-          
-          <div *ngIf="cell['cell_type'] == 'markdown'" class="type element_p">
-              m
-          </div>
-          <div *ngIf = "cell['cell_type'] == 'code'" class="type element_p">
-              c
-          </div>
-          <div style="display: block;background-color: aqua;width: 100%;">
-            <div *ngFor="let line of cell.source; index as line_index">
-              
-              
-              <div class="line">
-                <div class="index element_p" style="background-color: orange;">
-                  {{ line_index + 1 }}
-                </div>
-                <div class="line_context element_p">
-                  {{ line }}
-                </div>
-              </div>
+  <div *ngFor="let diff of diffelements">
+    <div *ngFor="let cell2cell of diff.cell2cells">
 
-            </div>
-          </div>
-        </span>
-      </div>
-    </span>
+      <vscode-nbtracker-angular-diff-mapping
+        [old_cell_index]="cell2cell.old_cell_index"
+        [new_cell_index]="cell2cell.new_cell_indexs"
+        [old_cell]="diff.getCell(diff.old_notebook,cell2cell.old_cell_index)"
+        [new_cell]="diff.getCells(diff.new_notebook,cell2cell.new_cell_indexs)"
+        >
+      </vscode-nbtracker-angular-diff-mapping>
+      
+    </div>
   </div>
 </div>

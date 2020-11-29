@@ -1,33 +1,32 @@
-<div class="block">
 
-
-  <div class="sub_block">
-    <div>
-      {{ old_cell_index }}
-    </div>
-    <div *ngFor="let line of old_cell; index as old_line_index" #elem [id]="getId(old_cell_index,old_line_index,'old')">
-      <div>{{getId(old_cell_index,old_line_index,'old')}}</div>
-      <div class="line">
-        <div class="index element_p" style="background-color: orange;">
-          {{ old_line_index + 1 }}
-        </div>
-        <div class="line_context element_p">
-          {{ line }}
-        </div>
-      </div>
-    </div>
+  <div id="d" style="width:400px;height:200px;background-color: red;">
+    {{old_cell_index}}
   </div>
+  
+  <canvas id="c" width="300" height="100%">
+  </canvas>
 
-  <div class="sub_block">
-    <div *ngFor="let cell of new_cell; index as cell_list_index">
+
+
+
+
+
+
+<!-- <div  class="block" > -->
+
+
+  
+  <!-- <canvas>
+    
+    <div class="sub_block">
       <div>
-        {{ new_cell_index[cell_list_index] }}
+        {{ old_cell_index }}
       </div>
-      <div *ngFor="let line of cell; index as new_line_index" #elem [id]="getId(new_cell_index,new_line_index,'new')">
-        <div>{{getId(new_cell_index,new_line_index,'new')}}</div>
+      <div *ngFor="let line of old_cell; index as old_line_index" #elem [id]="getId(old_cell_index,old_line_index+1,'old')">
+        <div>{{getId(old_cell_index,old_line_index,'old')}}</div>
         <div class="line">
           <div class="index element_p" style="background-color: orange;">
-            {{ new_line_index + 1}}
+            {{ old_line_index + 1 }}
           </div>
           <div class="line_context element_p">
             {{ line }}
@@ -35,5 +34,28 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
+  
+    <div style="position: relative;" class="sub_block">
+      <div *ngFor="let cell of new_cell; index as cell_list_index">
+        <div>
+          {{ new_cell_index[cell_list_index] }}
+        </div>
+        <div *ngFor="let line of cell; index as new_line_index" #elem [id]="getId(new_cell_index[cell_list_index],new_line_index+1,'new')">
+          <div>{{getId(new_cell_index,new_line_index,'new')}}</div>
+          <div class="line">
+            <div class="index element_p" style="background-color: orange;">
+              {{ new_line_index + 1}}
+            </div>
+            <div class="line_context element_p">
+              {{ line }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </canvas>> -->
+  
+    
+
+<!-- </div> -->

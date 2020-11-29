@@ -7,7 +7,9 @@
 }
 
 .sub_block{
-    width: 50%;;
+    width: 50%;
+    z-index: 2;
+    background-color: transparent;
 }
 
 div.line {
@@ -25,3 +27,15 @@ div.line_context {
   width: 95%;
   background-color: yellow;
 }
+
+canvas {
+  border: 1px solid black;
+  height: 100%;
+  width: 100%;
+
+}
+
+
+
+#c{background-color:#000;z-index:1;}
+#d{position:absolute;z-index:2;}

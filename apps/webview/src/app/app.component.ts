@@ -1,5 +1,5 @@
 import { Component, HostListener,OnInit} from '@angular/core';
-import {DiffDecoder} from './diff_decoder';
+import {DiffDecoder,line2line} from './diff_decoder';
 
 @Component({
   selector: 'vscode-nbtracker-angular-root',
@@ -10,7 +10,8 @@ export class AppComponent implements OnInit{
   title = 'notebook diff test2';
   diffelements:DiffElement[];
 
-  constructor(){
+
+  ngOnInit(){
     this.diffelements = [];
     console.log("get in AppComponent constructor");
     window.addEventListener('message', (event) => {
@@ -20,11 +21,6 @@ export class AppComponent implements OnInit{
       }
       console.log(this.diffelements.length);
     });
-    
-  }
-
-  ngOnInit(){
-
   }
 
 }
@@ -34,24 +30,28 @@ class DiffElement{
   new_notebook;
   mapping:DiffDecoder;
   cell2cells;
+  line2lines;
 
   constructor(input:JSON){
     this.old_notebook = JSON.parse(input["old_notebook"]).cells;
     this.new_notebook = JSON.parse(input["new_notebook"]).cells;
     this.mapping = new DiffDecoder(input["mapping"]);
     this.cell2cells = this.mapping.cell2cells.map((x)=> JSON.parse(JSON.stringify(x)));
-    console.log(this.cell2cells);
-    
+    this.line2lines = this.mapping.line2lines.map((x) => JSON.parse(JSON.stringify(x)));
   }
 
-  getCell(notebook,index:number){
+  getCellMap(index:number){
+    return this.line2lines.filter((x)=>x.old_cell_index == index);
+  }
+
+  getCellSource(notebook,index:number):JSON{
     return notebook[index-1].source;
   }
 
-  getCells(notebook,indexs:number[]){
+  getCellsSource(notebook,indexs:number[]):JSON[]{
     var result = [];
     for (let index of indexs){
-      result.push(this.getCell(notebook,index))
+      result.push(this.getCellSource(notebook,index))
     }
     return result;
   }

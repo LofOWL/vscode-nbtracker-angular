@@ -1,7 +1,7 @@
 
+export {DiffDecoder,line2line,cell2cell};
 
-
-export class DiffDecoder{
+class DiffDecoder{
 
     message:string;
     line2lines:line2line[];
@@ -18,7 +18,7 @@ export class DiffDecoder{
         this.old_cell_length = 0;
         for (let i of this.message){
             var i_s = i.split(",").map((x) => Number(x));
-            this.line2lines.push(new line2line(i_s[0],i_s[1],i_s[2],i_s[3]));
+            this.line2lines.push(new line2line(i_s[0],i_s[1],i_s[2],i_s[3],i_s[4]));
             if (this.old_cell_length < i_s[0]) this.old_cell_length = i_s[0]   
         }
 
@@ -65,12 +65,14 @@ class line2line{
     new_index: number;
     old_cell_index: number;
     new_cell_index: number;
+    ratio:number;
 
-    constructor(old_cell_index:number,old_index:number,new_cell_index:number,new_index:number){
+    constructor(old_cell_index:number,old_index:number,new_cell_index:number,new_index:number,ratio:number){
         this.old_index = old_index;
         this.new_index = new_index;
         this.old_cell_index = old_cell_index;
         this.new_cell_index = new_cell_index;
+        this.ratio = ratio;
     }
 
     

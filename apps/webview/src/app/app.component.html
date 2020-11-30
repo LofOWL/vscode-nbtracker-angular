@@ -1,20 +1,13 @@
-<h2>Diff Notebook</h2>
+<!-- <h2>Diff Notebook</h2> -->
 
-<div class="file_list">
-  
+<div *ngFor="let diff of diffelements">
+    <vscode-nbtracker-angular-diff-mapping
+      [diff] = "diff"
+    >
+    </vscode-nbtracker-angular-diff-mapping>
 </div>
-    <div *ngFor="let diff of diffelements">
-      <div *ngFor="let cell2cell of diff.cell2cells">
-    
-        <vscode-nbtracker-angular-diff-mapping
-          [old_cell_index]="cell2cell.old_cell_index"
-          [new_cell_index]="cell2cell.new_cell_indexs"
-          [old_cell]="diff.getCellSource(diff.old_notebook,cell2cell.old_cell_index)"
-          [new_cell]="diff.getCellsSource(diff.new_notebook,cell2cell.new_cell_indexs)"
-          [mapping]="diff.getCellMap(cell2cell.old_cell_index)"
-          >
-        </vscode-nbtracker-angular-diff-mapping>
-        
-      </div>
-    </div>
+
+
+
+
 

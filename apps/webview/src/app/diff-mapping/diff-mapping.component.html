@@ -1,61 +1,76 @@
 
-  <div id="d" style="width:400px;height:200px;background-color: red;">
-    {{old_cell_index}}
-  </div>
-  
-  <canvas id="c" width="300" height="100%">
-  </canvas>
+<canvas>
+</canvas>
 
+<div class="file_list">
+  <span class="file">
+    <div *ngFor="let cell of diff.old_notebook; index as cell_index" >
+      
+      <div [id]="getId(cell_index,'old')" class="cell">
 
+        <div class="index element_p" style="background-color: aqua;">
+          {{ cell_index + 1 }}
+        </div>
+        
+        <div *ngIf="cell['cell_type'] == 'markdown'" class="type element_p">
+            m
+        </div>
+        <div *ngIf = "cell['cell_type'] == 'code'" class="type element_p">
+            c
+        </div>
+        <div style="display: block;background-color: aqua;width: 100%;">
+          <div *ngFor="let line of cell.source; index as line_index">
+            
+            
+            <div class="line">
+              <div class="index element_p" style="background-color: orange;">
+                {{ line_index + 1 }}
+              </div>
+              <div class="line_context element_p">
+                {{ line }}
+              </div>
+            </div>
 
-
-
-
-
-<!-- <div  class="block" > -->
-
-
-  
-  <!-- <canvas>
-    
-    <div class="sub_block">
-      <div>
-        {{ old_cell_index }}
-      </div>
-      <div *ngFor="let line of old_cell; index as old_line_index" #elem [id]="getId(old_cell_index,old_line_index+1,'old')">
-        <div>{{getId(old_cell_index,old_line_index,'old')}}</div>
-        <div class="line">
-          <div class="index element_p" style="background-color: orange;">
-            {{ old_line_index + 1 }}
-          </div>
-          <div class="line_context element_p">
-            {{ line }}
           </div>
         </div>
       </div>
     </div>
-  
-    <div style="position: relative;" class="sub_block">
-      <div *ngFor="let cell of new_cell; index as cell_list_index">
-        <div>
-          {{ new_cell_index[cell_list_index] }}
+  </span>
+
+  <span class="file">
+    <div *ngFor="let cell of diff.new_notebook; index as cell_index" >
+      <span [id]="getId(cell_index,'new')" class="cell">
+        <div class="index element_p" style="background-color: aqua;">
+          {{ cell_index + 1 }}
         </div>
-        <div *ngFor="let line of cell; index as new_line_index" #elem [id]="getId(new_cell_index[cell_list_index],new_line_index+1,'new')">
-          <div>{{getId(new_cell_index,new_line_index,'new')}}</div>
-          <div class="line">
-            <div class="index element_p" style="background-color: orange;">
-              {{ new_line_index + 1}}
+        
+        <div *ngIf="cell['cell_type'] == 'markdown'" class="type element_p">
+            m
+        </div>
+        <div *ngIf = "cell['cell_type'] == 'code'" class="type element_p">
+            c
+        </div>
+        <div style="display: block;background-color: aqua;width: 100%;">
+          <div *ngFor="let line of cell.source; index as line_index">
+            
+            
+            <div class="line">
+              <div class="index element_p" style="background-color: orange;">
+                {{ line_index + 1 }}
+              </div>
+              <div class="line_context element_p">
+                {{ line }}
+              </div>
             </div>
-            <div class="line_context element_p">
-              {{ line }}
-            </div>
+
           </div>
         </div>
-      </div>
+      </span>
     </div>
-    
-  </canvas>> -->
-  
-    
+  </span>
 
-<!-- </div> -->
+</div>
+
+
+
+

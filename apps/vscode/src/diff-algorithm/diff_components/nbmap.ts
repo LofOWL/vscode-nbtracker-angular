@@ -36,6 +36,9 @@ export class nbmap {
         this.linemap.push(new line2line(old_line,new line(),0.0));
       }
     });
+    new_lines.forEach((new_line)=>{
+      this.linemap.push(new line2line(new line(),new_line,0.0));
+    });
     return this.linemap;
   }
 

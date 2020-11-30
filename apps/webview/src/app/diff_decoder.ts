@@ -2,37 +2,42 @@
 export {DiffElement,DiffDecoder,line2line,cell2cell};
 
 class DiffElement{
-    old_notebook;
-    new_notebook;
+    old_notebook:Notebook;
+    new_notebook:Notebook;
     mapping:DiffDecoder;
-    cell2cells;
-    line2lines;
-  
+
     constructor(input:JSON){
-      this.old_notebook = JSON.parse(input["old_notebook"]).cells;
-      this.new_notebook = JSON.parse(input["new_notebook"]).cells;
+      this.old_notebook = new Notebook(input["old_notebook"]);
+      this.new_notebook = new Notebook(input["new_notebook"]);
       this.mapping = new DiffDecoder(input["mapping"]);
-      this.cell2cells = this.mapping.cell2cells.map((x)=> JSON.parse(JSON.stringify(x)));
-      this.line2lines = this.mapping.line2lines.map((x) => JSON.parse(JSON.stringify(x)));
-    }
-  
-    getCellMap(index:number){
-      return this.line2lines.filter((x)=>x.old_cell_index == index);
-    }
-  
-    getCellSource(notebook,index:number):JSON{
-      return notebook[index-1].source;
-    }
-  
-    getCellsSource(notebook,indexs:number[]):JSON[]{
-      var result = [];
-      for (let index of indexs){
-        result.push(this.getCellSource(notebook,index))
-      }
-      return result;
     }
   
   }
+
+class Notebook{
+  data:JSON;
+  constructor(input:string){
+    this.data = JSON.parse(input).cells;
+    
+  }
+
+  getCellSource(index:number):JSON{
+    return this.data[index-1].source;
+  }
+
+  getLineSource(cell_index:number,line_index:number):string{
+    return this.getCellSource(cell_index)[line_index-1];
+  }
+
+  getCellsSource(indexs:number[]):JSON[]{
+    var result = [];
+    for (let index of indexs){
+      result.push(this.getCellSource(index))
+    }
+    return result;
+  }
+
+}
 
 class DiffDecoder{
 
@@ -69,7 +74,16 @@ class DiffDecoder{
     mapline(index: number): line2line[] {
         return this.line2lines.filter(
             (x) => x.old_cell_index === index
-          );;
+          );
+    }
+
+    getline2line(cell_index:number,line_index:number,type:string):line2line{
+      if (type === "new"){
+        return this.line2lines.find((x) => x.new_cell_index === cell_index && x.new_index === line_index);
+      }else{
+        return this.line2lines.find((x) => x.old_cell_index === cell_index && x.old_index === line_index);
+      }
+      
     }
 
     mapcell(index:number):cell2cell|undefined{

@@ -23,6 +23,10 @@ class Notebook{
       });
       
     }
+
+    getHTMLElement(cell_index:number){
+      return this.cells.find((value) => value.cell_index === cell_index);
+    }
   
     getCellSource(index:number):JSON{
       return this.data[index-1].source;

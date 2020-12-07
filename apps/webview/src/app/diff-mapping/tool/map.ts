@@ -1,6 +1,6 @@
-import { Cell } from '../diff-mapping';
+export {generate_map,Cell,DiffMapping};
 
-export function generate_map(parent) {
+function generate_map(parent) {
   parent.diffmapping = [];
   // tslint:disable-next-line: forin
   for (const cell2cell of parent.diff.mapping.cell2cells) {
@@ -29,4 +29,17 @@ export function generate_map(parent) {
       new: new_cells,
     });
   }
+}
+
+
+interface Cell{
+    id: string;
+    cell_index: number
+    selected: boolean;
+    element: HTMLElement;
+}
+
+interface DiffMapping{
+    old: Cell;
+    new: Cell[];
 }

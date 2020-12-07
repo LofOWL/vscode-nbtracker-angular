@@ -1,6 +1,6 @@
 import { Component, HostListener,OnInit} from '@angular/core';
 import { async } from 'rxjs/internal/scheduler/async';
-import {DiffElement} from './diff_decoder';
+import {DiffElement} from './structure/diff_decoder';
 
 @Component({
   selector: 'vscode-nbtracker-angular-root',

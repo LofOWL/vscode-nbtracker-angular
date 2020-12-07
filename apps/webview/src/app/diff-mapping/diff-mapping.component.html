@@ -4,63 +4,70 @@
 
 <div class="file_list">
   <span class="file">
-    <div *ngFor="let cell of diff.old_notebook.data; index as cell_index" >
-      
-      <div [id]="getId(cell_index,'old')" class="cell">
 
-        <div class="index element_p" style="background-color: aqua;">
-          {{ cell_index + 1 }}
-        </div>
-        
-        <div *ngIf="cell['cell_type'] == 'markdown'" class="type element_p">
-            m
-        </div>
-        <div *ngIf = "cell['cell_type'] == 'code'" class="type element_p">
-            c
-        </div>
-        <div style="display: block;background-color: aqua;width: 100%;">
-          <div *ngFor="let line of cell.source; index as line_index">
-            
-            
-            <div class="line">
-              <div class="index element_p" style="background-color: orange;">
-                {{ line_index + 1 }}
-              </div>
-              <div class="line_context element_p">
-                <!-- {{ line }} -->
-                <div [id]="getlineId(cell_index+1,line_index+1,'old')"></div>
-              </div>
+    <div *ngIf="diff.old_notebook.cells?.length > 0">
+
+      <div *ngFor="let cell of diff.old_notebook.cells;" >
+        <div [id]="cell.id" class="cell" (click)="selectCell(cell.id,'old')">
+  
+          <div class="index element_p" style="background-color: aqua;">
+            {{ cell.cell_index }}
+          </div>
+          
+          <div *ngIf="cell.cell_type == 'markdown';else code_old" class="type element_p">
+              m
+          </div>
+          <ng-template #code_old >
+            <div class="type element_p">
+              c
             </div>
+          </ng-template>
 
+          <div  [id]="cell.id+'_lines'"  style="display: block;background-color: aqua;width: 100%;">
+            <div *ngFor="let line of cell.source; index as line_index">
+              
+              <li class="line">
+                <div class="index element_p" style="background-color: orange;">
+                  {{ line_index + 1 }}
+                </div>
+                <div class="line_context element_p">
+  
+                  <div [id]="getlineId(cell.cell_index,line_index+1,'old')"></div>
+                </div>
+              </li>
+  
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </span>
 
   <span class="file">
-    <div *ngFor="let cell of diff.new_notebook.data; index as cell_index" >
-      <span [id]="getId(cell_index,'new')" class="cell">
+    <div *ngFor="let cell of diff.new_notebook.cells; index as cell_index" >
+      <span [id]="cell.id" class="cell" (click)="selectCell(cell.id,'new')">
         <div class="index element_p" style="background-color: aqua;">
-          {{ cell_index + 1 }}
+          {{ cell.cell_index}}
         </div>
         
-        <div *ngIf="cell['cell_type'] == 'markdown'" class="type element_p">
+        <div *ngIf="cell.cell_type == 'markdown';else code_new" class="type element_p">
             m
         </div>
-        <div *ngIf = "cell['cell_type'] == 'code'" class="type element_p">
-            c
-        </div>
-        <div style="display: block;background-color: aqua;width: 100%;">
+        <ng-template  #code_new >
+            <div class="type element_p">
+              c
+            </div>
+        </ng-template>
+        <div [id]="cell.id+'_lines'" style="display: block;background-color: aqua;width: 100%;">
           <div *ngFor="let line of cell.source; index as line_index">
-            
             
             <div class="line">
               <div class="index element_p" style="background-color: orange;">
                 {{ line_index + 1 }}
               </div>
               <div class="line_context element_p">
-                <!-- {{ line }} -->
+
                 <div [id]="getlineId(cell_index+1,line_index+1,'new')"></div>
               </div>
             </div>
@@ -73,32 +80,7 @@
 
 </div>
 
-<script src="diff.js"></script>
-<script>
-const one = 'beep boop',
-    other = 'beep boob blah',
-    color = '';
-    
-let span = null;
- 
-const diff = Diff.diffChars(one, other),
-    display = document.getElementById('display'),
-    fragment = document.createDocumentFragment();
- 
-diff.forEach((part) => {
-  // green for additions, red for deletions
-  // grey for common parts
-  const color = part.added ? 'green' :
-    part.removed ? 'red' : 'grey';
-  span = document.createElement('span');
-  span.style.color = color;
-  span.appendChild(document
-    .createTextNode(part.value));
-  fragment.appendChild(span);
-});
- 
-display.appendChild(fragment);
-</script> 
+
 
 
 

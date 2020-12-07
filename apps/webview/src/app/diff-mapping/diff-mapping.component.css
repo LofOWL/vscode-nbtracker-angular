@@ -1,6 +1,7 @@
 .file_list{
   display: inline-flex;
   position: relative;
+  background-color: transparent;
   z-index: 1;
   width: 100%;
   height: 100%;
@@ -9,7 +10,7 @@
 canvas {
   position: absolute;
   background-color: transparent;
-  z-index: 2;
+  z-index: 0;
 }
 
 .file{
@@ -27,14 +28,14 @@ canvas {
   background-color: white; 
 }
 
-div.index{
+.index{
   color: black;
   width: 5%;
   align-items: center;
   text-align: right;
 }
 
-div.type{
+.type{
   color: black;
   font-weight: bold;
   width: 5%;
@@ -43,7 +44,7 @@ div.type{
 }
 
 
-div.cell_context{
+.cell_context{
   background-color: green;
   width: 5%;
   align-items: center;
@@ -53,7 +54,7 @@ div.cell_context{
 }
 
 
-div.line{
+.line{
   margin: 0px;
   display: flex;
   flex-direction: row;
@@ -63,7 +64,7 @@ div.line{
   padding: 3px;
 }
 
-div.line_context{
+.line_context{
   color:black;
   width: 95%;
   background-color: yellow;

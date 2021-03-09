@@ -45,7 +45,7 @@ export class DiffMappingComponent implements OnInit {
     this.canvas.getContext('2d').clearRect(0,0,this.canvas.width,this.canvas.height);
     this.draw_lines();
   }
-
+ 
   set_cell_visible(value:boolean,id:string){
     const ele = document.getElementById(id+"_lines");
     ele.style.display = value ? "initial": "none";
@@ -91,6 +91,9 @@ export class DiffMappingComponent implements OnInit {
       if (map.new_cell_indexs.length === 1){
         const old_source = JSON.stringify(this.diff.old_notebook.getCellSource(Number(map.old_cell_index)));
         const new_source = JSON.stringify(this.diff.new_notebook.getCellSource(Number(map.new_cell_indexs[0])));
+        console.log(old_source);
+        console.log(new_source);
+        console.log(old_source === new_source);
         if (old_source === new_source){
           const old_cell = this.diff.old_notebook.getHTMLElement(map.old_cell_index);
           const new_cell = this.diff.new_notebook.getHTMLElement(map.new_cell_indexs[0]);

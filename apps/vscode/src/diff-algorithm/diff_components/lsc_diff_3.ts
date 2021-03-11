@@ -4,8 +4,9 @@ import {compareTwoStrings} from "string-similarity";
 
 
 export function lsc_diff_3(old_notebook:notebook,new_notebook:notebook){
-    console.log(old_notebook.getContext());
-    console.log(new_notebook.getContext());
+    old_notebook.generate();
+    new_notebook.generate();
+
     const result = diffArrays(old_notebook.getContext(),new_notebook.getContext());
     let old_index = 1; let new_index = 1;
     let identical_map:Array<[number,number]> = [];
@@ -75,9 +76,7 @@ export function lsc_diff_3(old_notebook:notebook,new_notebook:notebook){
 
     return format_json;
       
-      
     
-
 }
 
 

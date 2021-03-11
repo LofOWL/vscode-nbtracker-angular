@@ -21,7 +21,7 @@ export class notebook {
     const html = this.readNotebook();
     const obj = JSON.parse(html);
     this.cells_length = 0;
-    obj["cells"].forEach((cell_ele: any, index: number) => {
+    obj["cells"].forEach((cell_ele: unknown, index: number) => {
       const new_cell = Object.assign(new cell(index + 1), cell_ele);
       new_cell.generate();
       this.cells.push(new_cell);
@@ -32,7 +32,7 @@ export class notebook {
   }
 
   mapCell(index:number){
-    for (const i = 0; i < this.list_lines_length.length; i++){
+    for (let i = 0; i < this.list_lines_length.length; i++){
       if (index <= this.list_lines_length[i]){
         return [i+1,index];
       }else{

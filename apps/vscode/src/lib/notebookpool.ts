@@ -24,14 +24,14 @@ export default class NotebookPool {
       vscode.window.showInformationMessage('file existed');
     }
     console.log('new:');
-    for (let file of this.filelist) {
+    for (const file of this.filelist) {
       console.log(file.uri.fsPath);
     }
   }
 
   diff(extensionPath: string) {
-    let index:number = 0;
-    let diffelements:DiffElement[] = [];
+    let index = 0;
+    const diffelements:DiffElement[] = [];
     while (index < this.filelist.length-1){
       diffelements.push(new DiffElement(this.filelist[index],this.filelist[index+1]));
       index ++;
@@ -43,8 +43,8 @@ export default class NotebookPool {
   }
 
   isExist(e: vscode.Uri) {
-    var isExist = false;
-    for (let file of this.filelist) {
+    const isExist = false;
+    for (const file of this.filelist) {
       if (file.uri.fsPath == e.fsPath) {
         return true;
       }

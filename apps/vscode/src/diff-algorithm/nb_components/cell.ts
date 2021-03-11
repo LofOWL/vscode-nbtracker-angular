@@ -5,15 +5,18 @@ export class cell {
   source!: [];
   cell_type!: string;
   lines: Array<line> = [];
+  lines_length:number;
   
   constructor(index: number) {
     this.index = index;
+    this.lines_length = 0;
   }
 
   generate() {
     this.source.forEach((value, index) => {
-      let new_line: line = new line(value, index + 1,this.index);
+      const new_line: line = new line(value, index + 1,this.index);
       this.lines.push(new_line);
+      this.lines_length ++;
     });
     return this.lines;
   }
@@ -26,17 +29,25 @@ export class cell {
       return this.lines.find(x =>x.index == index+1);
   }
 
-  getLineList():string[]|undefined{
-    var line_list:string[] = [];
-    for (let line_ele of this.lines){
+  getLineList():string[]{
+    const line_list:string[] = [];
+    for (const line_ele of this.lines){
       line_list.push(line_ele.context);
     }
     return line_list;
   }
 
+  getContext():string{
+    let context = "";
+    for (const line_ele of this.lines){
+      context += line_ele.context;
+    }
+    return context;
+  }
+
   public toString = (): string => {
-    var result: string = "";
-    for (let line_ele of this.lines) {
+    let result = "";
+    for (const line_ele of this.lines) {
       result += "" + this.index + " " + line_ele + " \n";
     }
     return result;

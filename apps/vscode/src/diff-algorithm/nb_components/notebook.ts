@@ -1,20 +1,50 @@
-var fs = require("fs");
+import {readFileSync} from "fs";
 import { cell } from "./cell";
-import { line } from "./line";
 
 export class notebook {
   path: string;
   cells: Array<cell>;
-  isGenerated!:boolean;
+  cells_length: number;
+  lines: Array<string>;
+  list_lines_length:number[];
+
 
   constructor(path: string) {
     this.path = path;
+    this.cells_length = 0;
     this.cells = [];
-    this.isGenerated = false;
+    this.lines = [];
+    this.list_lines_length = [];
   }
 
+  generate() {
+    const html = this.readNotebook();
+    const obj = JSON.parse(html);
+    this.cells_length = 0;
+    obj["cells"].forEach((cell_ele: any, index: number) => {
+      const new_cell = Object.assign(new cell(index + 1), cell_ele);
+      new_cell.generate();
+      this.cells.push(new_cell);
+      this.lines = this.lines.concat(new_cell.getLineList());
+      this.list_lines_length.push(new_cell.lines_length);
+      this.cells_length ++;
+    });
+  }
+
+  mapCell(index:number){
+    for (const i = 0; i < this.list_lines_length.length; i++){
+      if (index <= this.list_lines_length[i]){
+        return [i+1,index];
+      }else{
+        index -= this.list_lines_length[i];
+      }
+    }
+    return [-1,-1];
+  }
+
+
   readNotebook() {
-    const html = fs.readFileSync(this.path, "utf-8");
+    const html = readFileSync(this.path, "utf-8");
     return html;
   }
 
@@ -22,23 +52,12 @@ export class notebook {
     return this.cells.find(x => x.index == index);
   }
 
-  getLines():line[]{
-    let result:line[] = [];
-    this.cells.forEach((value)=>{
-      result = result.concat(value.lines);
-    });
+  getContext():string[]{
+    let result: string[] = [];
+    for (const cell of this.cells){
+      result = result.concat(cell.getLineList());
+    }
     return result;
-  }
-
-  generate() {
-    const html = this.readNotebook();
-    let obj = JSON.parse(html);
-    obj["cells"].forEach((cell_ele, index) => {
-      let new_cell = Object.assign(new cell(index + 1), cell_ele);
-      new_cell.generate();
-      this.cells.push(new_cell);
-    });
-    this.isGenerated = true;
   }
 
 }

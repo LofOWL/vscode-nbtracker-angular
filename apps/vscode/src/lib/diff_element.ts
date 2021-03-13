@@ -14,7 +14,6 @@ export class DiffElement{
         this.new_notebook = new_notebook.context;
         
         this.mapping = lsc_diff_3(new notebook(old_notebook.uri.fsPath),new notebook(new_notebook.uri.fsPath));
-        console.log(this.mapping);
     }
 
 }

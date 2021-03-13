@@ -33,7 +33,7 @@ export class notebook {
 
   mapCell(index:number){
     for (let i = 0; i < this.list_lines_length.length; i++){
-      if (index <= this.list_lines_length[i]){
+      if (0 <= index && index <= this.list_lines_length[i]){
         return [i+1,index];
       }else{
         index -= this.list_lines_length[i];

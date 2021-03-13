@@ -19,8 +19,33 @@ export class DiffMappingComponent implements OnInit {
     this.canvas = document.querySelector('canvas');
     this.canvas.width = document.documentElement.clientWidth;
     // this.canvas.addEventListener("click", this.onClick, false);
-    console.log(this.diff.old_notebook.cells);
+  }
 
+  ngAfterViewInit(){
+
+    // create line level mapping
+    this.create_line_diff();
+    console.log("1");
+
+    // update canvas hight
+    this.update_canvas_height();
+    console.log("2");
+
+    // generate mapping
+    generate_map(this);
+    console.log("3");
+
+    // draw line
+    this.draw_lines();
+    console.log("4");
+
+    // generate element
+    this.generate_all_element();
+    console.log("5");
+
+    // remove the identical
+    this.remove_identical();
+    console.log("6");
   }
 
   selectCell(id:string,type:string){
@@ -35,8 +60,8 @@ export class DiffMappingComponent implements OnInit {
       value = new_one.selected;
     }
 
-    this.set_cell_visible(value,id)
-    
+    this.set_cell_visible(value,id);
+
     this.refresh_canvas();
     
   }
@@ -51,29 +76,6 @@ export class DiffMappingComponent implements OnInit {
     ele.style.display = value ? "initial": "none";
   }
 
-  ngAfterViewInit(){
-
-    // create line level mapping
-    this.create_line_diff();
-
-    // update canvas hight
-    this.update_canvas_height();
-
-    // generate mapping
-    generate_map(this);
-
-    // draw line
-    this.draw_lines();
-
-    // generate element
-    this.generate_all_element();
-
-
-    // remove the identical
-    this.remove_identical();
-
-  }
-
   draw_lines(){
     for (let dm of this.diffmapping){
       console.log(dm);
@@ -85,7 +87,6 @@ export class DiffMappingComponent implements OnInit {
     }
   }
   
-
   remove_identical(){
     for (const map of this.diff.mapping.cell2cells){
       if (map.new_cell_indexs.length === 1){
@@ -129,6 +130,7 @@ export class DiffMappingComponent implements OnInit {
 
   create_line_diff(){
     for (let line2line of this.diff.mapping.line2lines){
+      console.log(line2line);
       if (line2line.new_cell_index !== -1 && line2line.old_cell_index !== -1){
         linediff(this,line2line,"old",false,false);
         linediff(this,line2line,"new",false,false);

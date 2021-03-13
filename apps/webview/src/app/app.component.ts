@@ -1,5 +1,4 @@
 import { Component, HostListener,OnInit} from '@angular/core';
-import { async } from 'rxjs/internal/scheduler/async';
 import {DiffElement} from './structure/diff_decoder';
 
 @Component({
@@ -14,14 +13,12 @@ export class AppComponent implements OnInit{
 
 
   ngOnInit(){
-    console.log("get in AppComponent constructor");
     window.addEventListener('message', (event) => {
       const message = JSON.parse(event.data); // The JSON data our extension sent
       for (const de of message) {
         this.diffelements.push(new DiffElement(de));
       }
     });
-
   }
 
 

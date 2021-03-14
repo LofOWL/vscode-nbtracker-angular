@@ -14,7 +14,6 @@ class DiffDecoder{
         this.line2lines = [];
         this.old_cell_length = 0;
         for (let i of this.message){
-          console.log(i);
             var i_s = i.split(",").map((x) => Number(x));
             this.line2lines.push({
               old_cell_index: i_s[0],

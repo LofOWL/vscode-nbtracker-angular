@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {DiffElement,line2line} from "../structure/diff_decoder";
+import {DiffElement} from "../structure/diff_decoder";
 
 import {linediff} from './tool/linediff';
 import {draw_line} from './tool/drawline';
@@ -25,42 +25,43 @@ export class DiffMappingComponent implements OnInit {
 
     // create line level mapping
     this.create_line_diff();
-    console.log("1");
 
     // update canvas hight
     this.update_canvas_height();
-    console.log("2");
 
     // generate mapping
     generate_map(this);
-    console.log("3");
 
     // draw line
     this.draw_lines();
-    console.log("4");
 
     // generate element
     this.generate_all_element();
-    console.log("5");
 
     // remove the identical
     this.remove_identical();
-    console.log("6");
   }
 
   selectCell(id:string,type:string){
-    let value;
-    if (type === "old"){
-      let old_one = this.diff.old_notebook.cells.find((value) => value.id === id);
-      old_one.selected = !old_one.selected;
-      value = old_one.selected;
-    }else{
-      let new_one = this.diff.new_notebook.cells.find((value) => value.id === id);
-      new_one.selected = !new_one.selected;
-      value = new_one.selected;
-    }
+    this.set_cell_visible(id);
 
-    this.set_cell_visible(value,id);
+    if (type === "old"){
+      this.diffmapping.forEach((value) =>{
+        if (value.old.id === id){
+          value.new.forEach((new_value) =>{
+            this.set_cell_visible(new_value.id);
+          })
+        }
+      });
+    }else{
+      this.diffmapping.forEach((value) =>{
+        value.new.forEach((new_value) =>{
+          if (new_value.id === id){
+            this.set_cell_visible(value.old.id);
+          }
+        })
+      });
+    }
 
     this.refresh_canvas();
     
@@ -71,14 +72,13 @@ export class DiffMappingComponent implements OnInit {
     this.draw_lines();
   }
  
-  set_cell_visible(value:boolean,id:string){
+  set_cell_visible(id:string){
     const ele = document.getElementById(id+"_lines");
-    ele.style.display = value ? "initial": "none";
+    ele.style.display = ele.style.display === "initial" ? "none": "initial";
   }
 
   draw_lines(){
     for (let dm of this.diffmapping){
-      console.log(dm);
       const old_cell = dm.old.element;
       for (let new_one of dm.new){
         const new_cell = new_one.element;
@@ -92,22 +92,18 @@ export class DiffMappingComponent implements OnInit {
       if (map.new_cell_indexs.length === 1){
         const old_source = JSON.stringify(this.diff.old_notebook.getCellSource(Number(map.old_cell_index)));
         const new_source = JSON.stringify(this.diff.new_notebook.getCellSource(Number(map.new_cell_indexs[0])));
-        console.log(old_source);
-        console.log(new_source);
-        console.log(old_source === new_source);
         if (old_source === new_source){
           const old_cell = this.diff.old_notebook.getHTMLElement(map.old_cell_index);
           const new_cell = this.diff.new_notebook.getHTMLElement(map.new_cell_indexs[0]);
-          old_cell.selected = false;
-          new_cell.selected = false;
-          this.set_cell_visible(false,old_cell.id);
-          this.set_cell_visible(false,new_cell.id);
+          const old_ele_ele = document.getElementById(old_cell.id+"_lines");
+          old_ele_ele.style.display = "none";
+          const new_ele_ele = document.getElementById(new_cell.id+"_lines");
+          new_ele_ele.style.display = "none";
         }
       }
     }
     this.refresh_canvas();
   }
-
 
   generate_all_element(){
     this.generate_element(this.diff.old_notebook.cells);
@@ -117,6 +113,9 @@ export class DiffMappingComponent implements OnInit {
   generate_element(cells:Cell[]){
     for (const cell of cells){
       cell.element = document.getElementById(cell.id);
+      // init lines click
+      const lines = document.getElementById(cell.id+"_lines");
+      lines.style.display = "initial";
     }
   }
 
@@ -127,10 +126,8 @@ export class DiffMappingComponent implements OnInit {
     html.clientHeight, html.scrollHeight, html.offsetHeight );
   }
 
-
   create_line_diff(){
     for (let line2line of this.diff.mapping.line2lines){
-      console.log(line2line);
       if (line2line.new_cell_index !== -1 && line2line.old_cell_index !== -1){
         linediff(this,line2line,"old",false,false);
         linediff(this,line2line,"new",false,false);
@@ -142,7 +139,6 @@ export class DiffMappingComponent implements OnInit {
     }
   }
 
-
   getId(cell_index:number,type:string){
     return ""+cell_index+"-"+type;
   }
@@ -150,7 +146,6 @@ export class DiffMappingComponent implements OnInit {
   getlineId(cell_index:number,line_index:number,type:string){
     return ""+cell_index+"-"+line_index+"-"+type;
   }
-
 
 }
 

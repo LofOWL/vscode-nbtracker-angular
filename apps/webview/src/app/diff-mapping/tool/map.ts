@@ -4,7 +4,6 @@ function generate_map(parent) {
   parent.diffmapping = [];
   // tslint:disable-next-line: forin
   for (const cell2cell of parent.diff.mapping.cell2cells) {
-    console.log(cell2cell);
     const old_id = parent.getId(cell2cell.old_cell_index, 'old');
     const old_notebook = document.getElementById(old_id);
     const old_cell: Cell = {
